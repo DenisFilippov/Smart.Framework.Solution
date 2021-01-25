@@ -46,6 +46,10 @@ namespace Smart.Framework.Containers
         throw new ArgumentNullException(nameof(vertex1));
       if (vertex2 == null)
         throw new ArgumentNullException(nameof(vertex2));
+      if (vertex1.Owner != this)
+        throw new GraphItemNotExistsException(vertex1);
+      if (vertex2.Owner != this)
+        throw new GraphItemNotExistsException(vertex2);
 
       var result = new Edge(vertex1, vertex2);
       _edgeList.Add(result);
