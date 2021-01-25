@@ -8,9 +8,9 @@ namespace Smart.Framework.Core
   /// </summary>
   internal static class PropertyValues
   {
-    private static readonly Hashtable _global = new();
+    private static readonly Hashtable Global = new();
 
-    private static int getKey(SmartObject obj, SmartProperty property)
+    private static int GetKey(SmartObject obj, SmartProperty property)
     {
       return property.GetHashCode() ^ obj.GetHashCode();
     }
@@ -25,10 +25,10 @@ namespace Smart.Framework.Core
     [MethodImpl(MethodImplOptions.Synchronized)]
     public static object GetValue(SmartObject obj, SmartProperty property)
     {
-      var key = getKey(obj, property);
-      var contains = _global.ContainsKey(key);
+      var key = GetKey(obj, property);
+      var contains = Global.ContainsKey(key);
       if (!contains && property.Metadata == null) throw new SmartPropertyException();
-      return contains ? _global[key] : property.Metadata.DefaultValue;
+      return contains ? Global[key] : property.Metadata.DefaultValue;
     }
 
     /// <summary>
@@ -41,15 +41,15 @@ namespace Smart.Framework.Core
     public static void SetValue(SmartObject obj, SmartProperty property, object value)
     {
       if (property.CheckValueCallback != null && !property.CheckValueCallback(obj, value)) return;
-      var key = getKey(obj, property);
+      var key = GetKey(obj, property);
       if (property.Metadata != null && property.Metadata.PropertyChangedCallback != null)
       {
-        var oldValue = _global.ContainsKey(key) ? _global[key] :
+        var oldValue = Global.ContainsKey(key) ? Global[key] :
           property.Metadata.DefaultValue != null ? property.Metadata.DefaultValue : null;
         property.Metadata.PropertyChangedCallback?.Invoke(obj, oldValue, value);
       }
 
-      _global[key] = value;
+      Global[key] = value;
     }
 
     /// <summary>
@@ -60,9 +60,9 @@ namespace Smart.Framework.Core
     [MethodImpl(MethodImplOptions.Synchronized)]
     public static void ResetValue(SmartObject obj, SmartProperty property)
     {
-      var key = getKey(obj, property);
-      if (!_global.ContainsKey(key)) return;
-      _global.Remove(key);
+      var key = GetKey(obj, property);
+      if (!Global.ContainsKey(key)) return;
+      Global.Remove(key);
     }
   }
 }

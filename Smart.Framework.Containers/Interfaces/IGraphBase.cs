@@ -3,5 +3,7 @@
   public interface IGraphBase
   {
     IGraphBase Owner { get; set; }
+
+    object Data { get; set; }
   }
 }

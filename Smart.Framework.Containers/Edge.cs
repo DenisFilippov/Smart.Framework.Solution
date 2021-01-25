@@ -16,5 +16,7 @@ namespace Smart.Framework.Containers
     public IVertex Vertex2 { get; }
 
     public IGraphBase Owner { get; set; }
+
+    public object Data { get; set; }
   }
 }

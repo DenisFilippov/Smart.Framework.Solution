@@ -91,5 +91,7 @@ namespace Smart.Framework.Containers
     public IEnumerable<IEdge> Edges => _edgeList;
 
     public IGraphBase Owner { get; set; }
+
+    public object Data { get; set; }
   }
 }
